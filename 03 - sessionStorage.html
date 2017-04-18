@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>sessionStorage</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Styles -->
+		<style type="text/css">
+			body {
+				max-width: 40em;
+				width: 88%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			div {
+				background-color: #f7f7f7;
+				padding: 0.5em;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<p>Type something, hit save, and reload the page. If you quit you browser and reopen it, this data will be lost.</p>
+
+		<div>
+			<p><strong>Your saved data:</strong></p>
+			<div data-saved>Nothing saved yet.</div>
+		</div>
+
+		<form>
+			<input type="text" data-save-content value=""><br>
+			<button data-save-btn>Save</button> <button data-clear-btn>Clear</button>
+		</form>
+
+
+		<!-- Scripts -->
+		<script>
+			// Variables
+			var btn = document.querySelector('[data-save-btn]');
+			var clear = document.querySelector('[data-clear-btn]');
+			var input = document.querySelector('[data-save-content]');
+			var saved = document.querySelector('[data-saved]');
+
+			// Save data on click
+			btn.addEventListener('click', function (event) {
+				event.preventDefault();
+				sessionStorage.setItem('saveForDemo', input.value);
+			}, false);
+
+			// Remove data on click
+			clear.addEventListener('click', function (event) {
+				event.preventDefault();
+				sessionStorage.removeItem('saveForDemo');
+			}, false);
+
+			// Load saved data on page load
+			var data = sessionStorage.getItem('saveForDemo');
+			if ( data ) {
+				saved.innerHTML = data;
+			}
+		</script>
+	</body>
+</html>
