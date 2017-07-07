@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Project Complete</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Styles -->
+		<style type="text/css">
+			body {
+				max-width: 40em;
+				width: 88%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			label,
+			input,
+			textarea {
+				width: 100%;
+			}
+
+			label {
+				font-weight: bold;
+			}
+
+			input,
+			textarea {
+				margin-bottom: 2em;
+			}
+
+			textarea {
+				height: 12em;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div>
+			<label for="name">Name</label>
+			<input type="text" id="name">
+		</div>
+
+		<div>
+			<label for="email">Email Address</label>
+			<input type="email" id="email">
+		</div>
+
+		<div>
+			<label for="notes">Notes</label>
+			<textarea id="notes"></textarea>
+		</div>
+
+
+		<!-- Scripts -->
+		<script>
+			// The simple way
+			// var inputs = document.querySelectorAll('input, textarea');
+			// for (var i = 0; i < inputs.length; i++) {
+			// 	var saved = localStorage.getItem('formAutosaveData_' + inputs[i].id);
+			// 	if (!saved) continue;
+			// 	inputs[i].value = saved;
+			// }
+
+			// document.addEventListener('input', function (event) {
+			// 	localStorage.setItem('formAutosaveData_' + event.target.id, event.target.value);
+			// }, false);
+
+
+			// The more complicated way
+			var saved = localStorage.getItem('formAutosaveData');
+			if (saved) {
+				saved = JSON.parse(saved);
+				for (var fieldId in saved) {
+					if ( Object.prototype.hasOwnProperty.call(saved, fieldId) ) {
+						var field = document.querySelector('#' + fieldId);
+						if (!field) continue;
+						field.value = saved[fieldId];
+					}
+				}
+			}
+
+			document.addEventListener('input', function (event) {
+				var saved = localStorage.getItem('formAutosaveData');
+				var data = saved ? JSON.parse(saved) : {};
+				data[event.target.id] = event.target.value;
+				localStorage.setItem('formAutosaveData', JSON.stringify(data));
+			}, false);
+		</script>
+	</body>
+</html>
