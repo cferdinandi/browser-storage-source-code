@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Project Complete: Simple</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Styles -->
+		<style type="text/css">
+			body {
+				max-width: 40em;
+				width: 88%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			label,
+			input,
+			textarea {
+				width: 100%;
+			}
+
+			label {
+				font-weight: bold;
+			}
+
+			input,
+			textarea {
+				margin-bottom: 2em;
+			}
+
+			textarea {
+				height: 12em;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<form id="autosave">
+			<div>
+				<label for="name">Name</label>
+				<input type="text" id="name">
+			</div>
+
+			<div>
+				<label for="email">Email Address</label>
+				<input type="email" id="email">
+			</div>
+
+			<div>
+				<label for="notes">Notes</label>
+				<textarea id="notes"></textarea>
+			</div>
+		</form>
+
+
+		<!-- Scripts -->
+		<script>
+			// Get all inputs
+			var inputs = document.querySelectorAll('input, textarea');
+
+			// Loop through each input
+			for (var i = 0; i < inputs.length; i++) {
+
+				// Check for saved data in localStorage
+				var saved = localStorage.getItem('formAutosaveData_' + inputs[i].id);
+				if (!saved) continue;
+
+				// Update the input value
+				inputs[i].value = saved;
+
+			}
+
+			// Saved the input value to localStorage when it changes
+			document.addEventListener('input', function (event) {
+				localStorage.setItem('formAutosaveData_' + event.target.id, event.target.value);
+			}, false);
+		</script>
+	</body>
+</html>

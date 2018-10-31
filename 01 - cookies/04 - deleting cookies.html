@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Deleting cookies</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Styles -->
+		<style type="text/css">
+			body {
+				max-width: 40em;
+				width: 88%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<p>NOTE: Google Chrome does not store cookies on localhost. For this exercise, use Firefox, Safari, or MS Edge.</p>
+
+
+		<!-- Scripts -->
+		<script>
+			console.log(document.cookie);
+
+			/*!
+			 * Create an expiration date timestamp for use with cookies.
+			 * (c) 2018 Chris Ferdinandi, MIT License, https://gomakethings.com
+			 * @param  {Number} time  The amount of time in the future to set the expiration date for
+			 * @return {String}       The expiration date
+			 */
+			var getExpirationDate = function (time) {
+				return new Date(+new Date() + time).toUTCString();
+			};
+
+			// Delete the cookie
+			document.cookie = 'sandwich=turkey; expires=' + getExpirationDate(-1);
+			console.log(document.cookie);
+		</script>
+	</body>
+</html>

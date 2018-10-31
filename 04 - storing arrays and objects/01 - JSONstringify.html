@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>JSON.stringify()</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Styles -->
+		<style type="text/css">
+			body {
+				max-width: 40em;
+				width: 88%;
+				margin-left: auto;
+				margin-right: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<script>
+			// A lunch order
+			var lunch = {
+			    sandwich: 'turkey',
+			    chips: 'Cape Cod',
+			    drink: 'Pepsi'
+			};
+
+			// Convert to a string
+			var lunchString = JSON.stringify(lunch);
+			console.log(lunchString);
+
+			// Save to sessionStorage
+			sessionStorage.setItem('lunchOrder', lunchString);
+
+			// Drink options
+			var drinks = ['Pepsi', 'water', 'lemonade'];
+
+			// Convert to a string
+			var drinksString = JSON.stringify(drinks);
+			console.log(drinksString);
+
+			// Save to sessionStorage
+			sessionStorage.setItem('drinkOptions', drinksString);
+		</script>
+	</body>
+</html>
