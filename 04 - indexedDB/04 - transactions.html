@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Adding data to a store</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 2);
+
+			// If the version has increased or there's no existing DB
+			openDB.onupgradeneeded = function (event) {
+
+				// Get the database and previous version number
+				let db = openDB.result;
+				let oldVer = event.oldVersion;
+
+				// If there's no wizards store, create it
+				if (oldVer < 2) {
+					db.createObjectStore('wizards', {keyPath: 'name'});
+				}
+
+			};
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+
+				// Get the database
+				let db = openDB.result;
+
+				// Create a transaction as a read/write operation
+				let tx = db.transaction('wizards', 'readwrite');
+
+				// // Get the store for this transaction
+				let store = tx.objectStore('wizards');
+
+				// Those could be combined, like this
+				// let store = db.transaction('wizards', 'readwrite').objectStore('wizards');
+
+				console.log(store);
+
+				// Get data to add to the database from an API
+				// This won't work
+				fetch('https://jsonplaceholder.typicode.com/todos').then(function (response) {
+					return response.json();
+				}).then(function (data) {
+
+					// If you try to write data to the store here, it will fail
+					// The transaction associated with the store will have already committed and closed
+
+				});
+
+				// Get data to add to the database from an API
+				// This WILL work
+				fetch('https://jsonplaceholder.typicode.com/todos').then(function (response) {
+					return response.json();
+				}).then(function (data) {
+
+					// This WILL work, since the data is already available when you create your transaction
+
+					// Create a transaction as a read/write operation
+					let tx = db.transaction('wizards', 'readwrite');
+
+					// Get the store for this transaction
+					let store = tx.objectStore('wizards');
+
+					// Close the database
+					db.close();
+
+				});
+
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+		</script>
+	</body>
+</html>

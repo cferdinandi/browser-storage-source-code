@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Getting data from a database</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 3);
+
+			// If the version has increased or there's no existing DB
+			openDB.onupgradeneeded = function (event) {
+
+				// Get the database and previous version number
+				let db = openDB.result;
+				let oldVer = event.oldVersion;
+
+				// If there's no wizards store, create it
+				if (oldVer < 2) {
+					db.createObjectStore('wizards', {keyPath: 'name'});
+				}
+
+				// If there's no spells store, create it
+				if (oldVer < 3) {
+					db.createObjectStore('spells', {keyPath: 'spell'});
+				}
+
+			};
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+
+				// Get the database
+				let db = openDB.result;
+
+				// If a version change happens while the page is open
+				db.onversionchange = function() {
+					db.close();
+					alert('The database is out-of-date. Please reload the page.');
+				};
+
+				// Get wizards from the database
+				getWizards(db);
+
+				// Close the database
+				db.close();
+
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+
+			// Get wizards from the database
+			function getWizards (db) {
+
+				// Create a transaction and get the store
+				let store = db.transaction('wizards', 'readonly').objectStore('wizards');
+
+				// Get a wizard from the database
+				let wizard = store.get('Merlin');
+
+				// Gets the key value instead
+				// let wizard = store.getKey('Merlin');
+
+				// Log the success
+				wizard.onsuccess = function () {
+					console.log('Wizard:', wizard.result);
+				};
+
+				// Log the error
+				wizard.onerror = function () {
+					console.log(wizard.error);
+				};
+
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Deleting a Cookie</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<style type="text/css">
+			body {
+				margin: 0 auto;
+				max-width: 40em;
+				width: 88%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<h1>Note</h1>
+
+		<p>Chromium and Webkit based browsers (such as Edge, Chrome, and Safari) do not store cookies on local websites opened with the <code>file://</code> protocol. For this demo, use Firefox, or open up a live website and copy/paste the examples into the console tab in developer tools.</p>
+
+
+		<script>
+			// Delete the cookie
+			document.cookie = `sandwich=turkey; path=/; max-age=0;`;
+		</script>
+	</body>
+</html>

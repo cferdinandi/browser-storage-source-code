@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Opening a database</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 1);
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+				let db = openDB.result;
+				console.log('success', db);
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+		</script>
+	</body>
+</html>

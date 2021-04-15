@@ -6,13 +6,11 @@
 		<title>Project Complete: Simple</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<!-- Styles -->
 		<style type="text/css">
 			body {
+				margin: 0 auto;
 				max-width: 40em;
 				width: 88%;
-				margin-left: auto;
-				margin-right: auto;
 			}
 
 			label,
@@ -38,6 +36,8 @@
 
 	<body>
 
+		<h1>Save Fields</h1>
+
 		<form id="autosave">
 			<div>
 				<label for="name">Name</label>
@@ -56,27 +56,26 @@
 		</form>
 
 
-		<!-- Scripts -->
 		<script>
-			// Get all inputs
-			var inputs = document.querySelectorAll('input, textarea');
+			// Get all form fields
+			let fields = document.querySelectorAll('input, textarea');
 
 			// Loop through each input
-			for (var i = 0; i < inputs.length; i++) {
+			for (let field of fields) {
 
 				// Check for saved data in localStorage
-				var saved = localStorage.getItem('formAutosaveData_' + inputs[i].id);
+				let saved = localStorage.getItem(`formData_${field.id}`);
 				if (!saved) continue;
 
 				// Update the input value
-				inputs[i].value = saved;
+				field.value = saved;
 
 			}
 
-			// Saved the input value to localStorage when it changes
+			// Listen for changes to form fields
 			document.addEventListener('input', function (event) {
-				localStorage.setItem('formAutosaveData_' + event.target.id, event.target.value);
-			}, false);
+				localStorage.setItem(`formData_${event.target.id}`, event.target.value);
+			});
 		</script>
 	</body>
 </html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Combing data from different stores</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 3);
+
+			// If the version has increased or there's no existing DB
+			openDB.onupgradeneeded = function (event) {
+
+				// Get the database and previous version number
+				let db = openDB.result;
+				let oldVer = event.oldVersion;
+
+				// If there's no wizards store, create it
+				if (oldVer < 2) {
+					db.createObjectStore('wizards', {keyPath: 'name'});
+				}
+
+				// If there's no spells store, create it
+				if (oldVer < 3) {
+					db.createObjectStore('spells', {keyPath: 'spell'});
+				}
+
+			};
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+
+				// Get the database
+				let db = openDB.result;
+
+				// If a version change happens while the page is open
+				db.onversionchange = function() {
+					db.close();
+					alert('The database is out-of-date. Please reload the page.');
+				};
+
+				// Get wizard and spell data and combine it
+				getWizardsAndSpells(db);
+
+				// Close the database
+				db.close();
+
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+
+			// Get wizards and spells and combine them
+			function getWizardsAndSpells (db) {
+
+				// Create a transaction and get the stores
+				let tx = db.transaction(['wizards', 'spells'], 'readonly');
+				let stores = [
+					tx.objectStore('wizards').getAll(),
+					tx.objectStore('spells').getAll()
+				];
+
+				// Loop through each store and get all items
+				// When both stores return data, use it
+				let done = 0;
+				for (let store of stores) {
+					store.onsuccess = function () {
+
+						// Increase the done count by 1
+						done++;
+
+						// If all requests aren't complete yet, bail
+						if (done < stores.length) return;
+
+						// Otherwise, log the results to the console
+						console.log('Both are done', stores[0].result, stores[1].result);
+
+					};
+				}
+
+			}
+		</script>
+	</body>
+</html>

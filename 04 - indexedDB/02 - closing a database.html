@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Closing a database</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 1);
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+
+				// Get the database
+				let db = openDB.result;
+
+				// Do some stuff...
+
+				// Close the database
+				db.close();
+
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+		</script>
+	</body>
+</html>

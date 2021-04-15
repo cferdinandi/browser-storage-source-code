@@ -21,30 +21,50 @@
 
 
 		<script>
-			// 1 Hour = 1000ms * 60s * 60m
-			var hour = 1000 * 60 * 60;
+			/**
+			 * Basic units of time
+			 */
 
-			// 1 Day =  1000ms * 60s * 60m * 24h
-			var day = 1000 * 60 * 60 * 24;
+			// 1 Hour = 60s * 60m
+			let hour = 60 * 60;
 
-			// 1 Week =  1000ms * 60s * 60m * 24h * 7 days
-			var week = 1000 * 60 * 60 * 24 * 7;
+			// 1 Day =  60s * 60m * 24h
+			let day = 60 * 60 * 24;
 
-			// 1 Year =  1000ms * 60s * 60m * 24h * 365 days
-			var year = 1000 * 60 * 60 * 24 * 365;
+			// 1 Week =  60s * 60m * 24h * 7 days
+			let week = 60 * 60 * 24 * 7;
 
-			// 12 Hours = 1000ms * 60s * 60m * 12
-			var twelveHours = 1000 * 60 * 60 * 12;
-
-			// 4 Weeks =  1000ms * 60s * 60m * 24h * 7 days * 4
-			var fourWeeks = 1000 * 60 * 60 * 24 * 7 * 4;
+			// 1 Year =  60s * 60m * 24h * 365 days
+			let year = 60 * 60 * 24 * 365;
 
 			console.log('hour', hour);
 			console.log('day', day);
 			console.log('week', week);
 			console.log('year', year);
+
+
+			/**
+			 * Multiples
+			 */
+
+			// 12 Hours = 60s * 60m * 12
+			let twelveHours = 60 * 60 * 12;
+
+			// 4 Weeks =  60s * 60m * 24h * 7 days * 4
+			let fourWeeks = 60 * 60 * 24 * 7 * 4;
+
 			console.log('12 hours', twelveHours);
 			console.log('4 weeks', fourWeeks);
+
+
+			/**
+			 * Milliseconds
+			 */
+
+			// 4 weeks in milliseconds
+			let fourWeeksMS = 60 * 60 * 24 * 7 * 4 * 1000;
+
+			console.log('4 weeks in milliseconds', fourWeeksMS);
 		</script>
 	</body>
 </html>

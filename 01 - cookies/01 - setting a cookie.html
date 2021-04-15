@@ -6,27 +6,44 @@
 		<title>Setting a Cookie</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<!-- Styles -->
 		<style type="text/css">
 			body {
+				margin: 0 auto;
 				max-width: 40em;
 				width: 88%;
-				margin-left: auto;
-				margin-right: auto;
 			}
 		</style>
 	</head>
 
 	<body>
 
-		<p>NOTE: Google Chrome does not store cookies on localhost. For this exercise, use Firefox, Safari, or MS Edge.</p>
+		<h1>Note</h1>
+
+		<p>Chromium and Webkit based browsers (such as Edge, Chrome, and Safari) do not store cookies on local websites opened with the <code>file://</code> protocol. For this demo, use Firefox, or open up a live website and copy/paste the examples into the console tab in developer tools.</p>
 
 
 		<script>
-			// Set a cookie
-			document.cookie = 'sandwich=turkey; expires=Fri, 31 Dec 2099 23:59:59 GMT';
-			document.cookie = 'drink=soda;';
-			console.log(document.cookie);
+			// Set a cookie named sandwich, with a value of turkey
+			document.cookie = 'sandwich=turkey;';
+
+
+			/*
+
+			 	Cookie Settings
+
+			 	- path={path} - The path to set the cookie at. Defaults to the current path. It might be a good idea to set this to the root path: path=/.
+			 	- domain={domain} - The domain for the cookie. Defaults to the current host name.
+			 	- max-age={max age in seconds} - The maximum amount of time to keep the cookie, in seconds.
+			 	- expires={date in GMT form} - A date on which to expire the cookie.
+			 	- secure - The cookie can only be transmitted over HTTPS.
+			 	- same-site={lax|strict|none} - Whether or not the browser can send the cookie to other sites. The default, lax, only sends with same-site requests and navigation GET requests; strict does not send to any external sites, even when following a link; and none does not place any restrictions.
+
+			 */
+
+			// set to the root path
+			// expires in two weeks: 60 seconds x 60 minutes x 24 hours x 14 days
+			// (we'll look at the math behind this in the next section)
+			document.cookie = `snack=chips; path=/; max-age=${60 * 60 * 24 * 14};`;
 		</script>
 	</body>
 </html>

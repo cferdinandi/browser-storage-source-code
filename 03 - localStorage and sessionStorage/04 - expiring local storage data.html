@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Expiring Data</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+
+		<script>
+			/**
+
+			 	The Approach
+
+				Save your data as an object with two keys:
+
+			 	1. The `data` key holds the data itself.
+			 	2. The `expires` is the timestamp your data expires on. We can compare it to the current date, and replace or delete it if the current date is greater than the `expires` timestamp.
+
+			 */
+
+			// Setup the localStorage data
+			// This expires after a week (1000ms * 60s * 60m * 24h * 7d)
+			let data = {
+				data: {
+					greeting: 'Hello',
+					name: 'world'
+				},
+				expires: new Date().getTime() + (1000 * 3)
+			};
+
+			// Save to localStorage
+			// localStorage.setItem('myData', JSON.stringify(data));
+
+			/**
+			 * Check if the data is still valid
+			 * @param  {Object}  saved   The saved data
+			 * @return {Boolean}         If true, data is still good
+			 */
+			function isDataValid (saved) {
+
+				// Check that there's data, and an expires key
+				if (!saved || !saved.data || !saved.expires) return false;
+
+				// Get the difference between the timestamp and expiration date
+				let difference = saved.expires - new Date().getTime();
+
+				// Check if the data has expired
+				return difference > 0;
+
+			}
+
+			// Get data from localStorage
+			let saved = JSON.parse(localStorage.getItem('myData'));
+
+			// Check if it's been less than a week since the data was saved
+			if (isDataValid(saved)) {
+				// The data is still good, use it
+				console.log('The data is good');
+			} else {
+				localStorage.removeItem('myData');
+				// Get fresh data and use that instead
+				console.log('The data has expired');
+			}
+		</script>
+	</body>
+</html>

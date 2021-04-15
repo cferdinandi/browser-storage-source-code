@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>window.sessionStorage</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+		<script>
+			// Store data
+			let data = 'The data that I want to store temporarily.';
+			sessionStorage.setItem('myTempDataKey', data);
+
+			// Get data
+			let tempData = sessionStorage.getItem('myTempDataKey');
+			console.log(tempData);
+
+			// Remove data
+			sessionStorage.removeItem('myTempDataKey');
+
+			// Update and log again
+			tempData = localStorage.getItem('myDataKey');
+			console.log(tempData);
+		</script>
+	</body>
+</html>

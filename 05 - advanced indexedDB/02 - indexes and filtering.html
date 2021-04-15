@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Indexes and Filtering</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 4);
+
+			// If the version has increased or there's no existing DB
+			openDB.onupgradeneeded = function (event) {
+
+				// Get the database and previous version number
+				let db = openDB.result;
+				let oldVer = event.oldVersion;
+
+				// If there's no wizards store, create it
+				if (oldVer < 2) {
+					db.createObjectStore('wizards', {keyPath: 'name'});
+				}
+
+				// If there's no spells store, create it
+				if (oldVer < 3) {
+					db.createObjectStore('spells', {keyPath: 'spell'});
+				}
+
+				// If there's no spellCount index, create it
+				if (oldVer < 4) {
+
+					// Get the wizards store
+					let store = event.target.transaction.objectStore('wizards');
+
+					// Add new spellCount field to each wizard
+					let wizards = store.getAll();
+					wizards.onsuccess = function () {
+						wizards.result.forEach(function (wizard) {
+							wizard.spellCount = wizard.spells.length;
+							store.put(wizard);
+						});
+					};
+
+					// Add new index
+					store.createIndex('spellCount', 'spellCount');
+
+				}
+
+			};
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+
+				// Get the database
+				let db = openDB.result;
+
+				// If a version change happens while the page is open
+				db.onversionchange = function() {
+					db.close();
+					alert('The database is out-of-date. Please reload the page.');
+				};
+
+				// Get wizards by spellCount
+				getBySpellCount(db);
+
+				// Close the database
+				db.close();
+
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+
+			function getBySpellCount(db) {
+
+				// Get a transaction and the store
+				// Then, get the index
+				// let store = db.transaction('wizards').objectStore('wizards');
+				// let spellCount = store.index('spellCount');
+
+				// You can also combine these into one line
+				let spellCount = db.transaction('wizards').objectStore('wizards').index('spellCount');
+
+				// Get all summon wizards
+				let request = spellCount.getAll(IDBKeyRange.lowerBound(3));
+
+				// Log on success
+				request.onsuccess = function () {
+					console.log('Wizards by spellCount', request.result);
+				};
+
+			}
+		</script>
+	</body>
+</html>

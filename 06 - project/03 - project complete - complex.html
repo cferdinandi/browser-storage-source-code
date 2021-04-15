@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Project Complete: Simple</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<style type="text/css">
+			body {
+				margin: 0 auto;
+				max-width: 40em;
+				width: 88%;
+			}
+
+			label,
+			input,
+			textarea {
+				width: 100%;
+			}
+
+			label {
+				font-weight: bold;
+			}
+
+			input,
+			textarea {
+				margin-bottom: 2em;
+			}
+
+			textarea {
+				height: 12em;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<h1>Save Fields</h1>
+
+		<form id="autosave">
+			<div>
+				<label for="name">Name</label>
+				<input type="text" id="name">
+			</div>
+
+			<div>
+				<label for="email">Email Address</label>
+				<input type="email" id="email">
+			</div>
+
+			<div>
+				<label for="notes">Notes</label>
+				<textarea id="notes"></textarea>
+			</div>
+		</form>
+
+
+		<script>
+			// Get all form fields
+			let fields = document.querySelectorAll('input, textarea');
+
+			// Get localStorage data
+			let saved = JSON.parse(localStorage.getItem('formData'));
+
+			// Loop through each input
+			if (saved) {
+				for (let field of fields) {
+
+					// Check for saved data in localStorage
+					if (!saved[field.id]) continue;
+
+					// Update the input value
+					field.value = saved[field.id];
+
+				}
+			}
+
+			// Listen for changes to form fields
+			document.addEventListener('input', function (event) {
+
+				// Get any existing saved data
+				let saved = JSON.parse(localStorage.getItem('formData')) || {};
+
+				// Add or update the field value
+				saved[event.target.id] = event.target.value;
+
+				// Save it back to localStorage
+				localStorage.setItem('formData', JSON.stringify(saved));
+
+			});
+		</script>
+	</body>
+</html>

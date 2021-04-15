@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Deleting data from a store</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+
+	<body>
+
+		<script>
+			// Open a database
+			let openDB = indexedDB.open('spellbook', 2);
+
+			// If the version has increased or there's no existing DB
+			openDB.onupgradeneeded = function (event) {
+
+				// Get the database and previous version number
+				let db = openDB.result;
+				let oldVer = event.oldVersion;
+
+				// If there's no wizards store, create it
+				if (oldVer < 2) {
+					db.createObjectStore('wizards', {keyPath: 'name'});
+				}
+
+			};
+
+			// If the database was successfully opened
+			openDB.onsuccess = function () {
+
+				// Get the database
+				let db = openDB.result;
+
+				// Delete a wizard from the database
+				deleteWizard(db);
+
+				// Close the database
+				db.close();
+
+			};
+
+			// If there was an error
+			openDB.onerror = function () {
+				console.warn(openDB.error);
+			};
+
+			// Delete a wizard from the database
+			function deleteWizard (db) {
+
+				// Create a transaction and get the store
+				let store = db.transaction('wizards', 'readwrite').objectStore('wizards');
+
+				// Update the wizard
+				let request = store.delete('Gandalf');
+
+				// Log the success
+				request.onsuccess = function () {
+					console.log('Wizard deleted:', request.result);
+				};
+
+				// Log the error
+				request.onerror = function () {
+					console.warn(request.error);
+				};
+
+			}
+		</script>
+	</body>
+</html>
